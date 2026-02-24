@@ -2,10 +2,10 @@ project:
   type: book
 
 book:
-  title: "Math Camp 2025"
+  title: "Math Camp"
   chapters:
     - index.qmd
-    - chapters/01-intro.qmd
+    #- chapters/01-intro.qmd
 
 format:
   html:
@@ -45,5 +45,5 @@ format:
       - _includes/gm-controls.html
 
   pdf:
-    output-file: Math-Camp-2025.pdf
+    output-file: Math-Camp.pdf
     toc: true

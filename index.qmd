@@ -1,7 +1,20 @@
 ---
-title: "Math Camp 2025"
+lightbox: true
 ---
 
-# Welcome to Math Camp 2025
+# Edition 2026 {.unnumbered}
 
-Use the left sidebar to navigate chapters.
+- Upcoming
+
+# Previous Editions {.unnumbered}
+
+[Math Camp 2025](https://parushya.github.io/mathcamp2025/)
+
+[Math Camp 2024](https://parushya.github.io/mathcamp2024/)
+
+Instructors: Mohammad Hashem Krayem and Parushya
+
+
+
+
+
