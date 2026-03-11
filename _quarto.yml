@@ -47,3 +47,8 @@ format:
   pdf:
     output-file: Math-Camp.pdf
     toc: true
+    
+execute:
+  freeze: false
+
+keep-md: true
