@@ -4,7 +4,63 @@ lightbox: true
 
 # Edition 2026 {.unnumbered}
 
-- Upcoming
+::: {.content-visible when-format="html"}
+```{=html}
+<div id="gm-session-list" class="gm-index">
+  <!-- populated from chapters-meta.json at page load; empty until chapters are added -->
+</div>
+```
+:::
+
+::: {.content-visible when-format="pdf"}
+```{r}
+#| echo: false
+#| results: asis
+library(yaml)
+
+or_empty <- function(x) if (is.null(x) || identical(x, "NULL")) "" else as.character(x)
+
+get_file <- function(ch) {
+  if (is.character(ch)) ch
+  else if (is.list(ch) && !is.null(ch$file)) ch$file
+  else NULL
+}
+
+config        <- yaml.load_file("_quarto.yml")
+chapter_files <- Filter(Negate(is.null), lapply(config$book$chapters, function(ch) {
+  f <- get_file(ch)
+  if (is.null(f) || f == "index.qmd") NULL else f
+}))
+
+if (length(chapter_files) == 0) {
+  cat("*Topics coming soon.*\n\n")
+} else {
+  for (i in seq_along(chapter_files)) {
+    f <- chapter_files[[i]]
+    if (!file.exists(f)) next
+    lines  <- readLines(f, warn = FALSE)
+    delims <- which(trimws(lines) == "---")
+    if (length(delims) < 2) next
+    parsed <- tryCatch(
+      yaml.load(paste(lines[(delims[1] + 1):(delims[2] - 1)], collapse = "\n")),
+      error = function(e) NULL
+    )
+    if (is.null(parsed)) next
+
+    title <- or_empty(parsed$title)
+    authors <- parsed$author
+    author_str <- if (is.null(authors)) "" else
+      paste(sapply(authors, function(a) or_empty(if (is.list(a)) a$name else a)), collapse = ", ")
+    date_str <- or_empty(parsed$date)
+
+    meta <- Filter(nchar, c(author_str, date_str))
+    cat("**Topic ", i, " — ", title, "**  \n", sep = "")
+    if (length(meta)) cat(paste(meta, collapse = " · "), "\n")
+    cat("\n")
+  }
+}
+```
+:::
 
 # Previous Editions {.unnumbered}
 
@@ -13,8 +69,3 @@ lightbox: true
 [Math Camp 2024](https://parushya.github.io/mathcamp2024/)
 
 Instructors: Mohammad Hashem Krayem and Parushya
-
-
-
-
-
