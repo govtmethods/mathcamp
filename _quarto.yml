@@ -20,6 +20,10 @@ format:
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Libre+Caslon+Text:wght@400;600&display=swap" rel="stylesheet">
         <script>
+          // Per-book PDF, read by _includes/gm-sitenav.html. It lives here and
+          // not in the include so that file stays byte-identical across books.
+          window.__gmPdfHref = "https://govtmethods.github.io/mathcamp/Math-Camp.pdf";
+
           // Theme: apply stored preference before first paint
           (function () {
             const KEY = "gm_theme";
@@ -80,20 +84,9 @@ format:
                 .catch(function () {});
             });
           })();
-
-          // Mobile breadcrumb
-          document.addEventListener("DOMContentLoaded", function () {
-            const active = document.querySelector("#quarto-sidebar .sidebar-item-text.sidebar-link.active, #quarto-sidebar .active > .sidebar-item-text");
-            if (!active) return;
-            const label = document.createElement("div");
-            label.id = "gm-chapter-label";
-            label.textContent = active.textContent.trim();
-            const header = document.getElementById("quarto-header");
-            if (header) header.insertAdjacentElement("afterend", label);
-          });
         </script>
     include-before-body:
-      - _includes/gm-controls.html
+      - _includes/gm-sitenav.html
 
   pdf:
     output-file: Math-Camp.pdf
