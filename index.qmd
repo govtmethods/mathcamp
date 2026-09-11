@@ -53,11 +53,23 @@ get_file <- function(ch) {
   else NULL
 }
 
-config        <- yaml.load_file("_quarto.yml")
-chapter_files <- Filter(Negate(is.null), lapply(config$book$chapters, function(ch) {
-  f <- get_file(ch)
-  if (is.null(f) || f == "index.qmd") NULL else f
-}))
+walk_chapters <- function(chs, part = "") {
+  out <- list()
+  for (ch in chs) {
+    if (is.list(ch) && !is.null(ch$part)) {
+      out <- c(out, walk_chapters(ch$chapters, as.character(ch$part)))
+    } else {
+      f <- get_file(ch)
+      if (!is.null(f) && f != "index.qmd") out[[length(out) + 1]] <- list(file = f, part = part)
+    }
+  }
+  out
+}
+
+config          <- yaml.load_file("_quarto.yml")
+chapter_entries <- walk_chapters(config$book$chapters)
+chapter_files   <- lapply(chapter_entries, function(e) e$file)
+chapter_parts   <- sapply(chapter_entries, function(e) e$part)
 
 if (length(chapter_files) == 0) {
   cat("*Topics coming soon.*\n\n")
